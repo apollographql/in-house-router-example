@@ -1,0 +1,31 @@
+# Overridden values for in-house router.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Anything we set here applies to the in-house-router chart.
+# Also: Because of the way helm works:
+#   https://helm.sh/docs/chart_template_guide/subcharts_and_globals/
+# all configuration that we set here is pushed to all sub-charts.
+
+# Need router.router, because:
+# the first router is the name of the sub-chart (router).
+# the second router is the section in the sub-chart related to router "configuration"
+# I can see that's a bit confusing, but we are stuck with it for now.
+router:
+  router:
+    args: [--hot-reload]
+    configuration:
+      #Your usual router configuration goes here
+      rhai:
+        scripts: /dist/rhai
+        main: in-house.rhai
+  extraVolumeMounts:
+    - name: rhai-volume
+      mountPath: /dist/rhai
+      readOnly: true
+  extraVolumes:
+    - name: rhai-volume
+      configMap:
+        # Provide the name of the ConfigMap containing the files you want
+        # to add to the container
+        name: rhai-config
