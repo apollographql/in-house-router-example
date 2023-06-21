@@ -25,14 +25,14 @@ helm upgrade \
   --install router helm/chart/in-house-router> \
   --atomic \
   --history-max 5 \
+  --set router.managedFederation.graphRef=${APOLLO_GRAPH_REF} \
   --set router.managedFederation.apiKey=${APOLLO_API_KEY} \
   --namespace <<parameters.domain>> \
   -f ./config/in-house-router.yaml
 ```
-
 Notes:
 
- - You only need the managedFederation line if you are using managed federation.
+ - You only need the managedFederation lines if you are using managed federation.
  - Make sure to set your namespace appropriately
 
 If you want to confirm that a change you are making is at least going to generate valid yaml, you can run:
